@@ -8,7 +8,7 @@ class Shape(abc.ABC):
         self.translation = translation
 
     def translate(self, translation):
-        self.translation = translation
+        self.translation = (self.translation[0] + translation[0], self.translation[1] + translation[1])
 
     @abc.abstractmethod
     def draw(self):

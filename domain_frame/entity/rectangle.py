@@ -9,6 +9,13 @@ class Rectangle(Shape):
         super().__init__(color, vertices, translation)
         self.draw_border = True
         self.draw_gradient = False
+        self.is_visible = True
+
+    def set_visible(self, visible):
+        self.is_visible = visible
+
+    def get_visible(self):
+        return self.is_visible
 
     def set_draw_border(self, value):
         self.draw_border = value
@@ -17,6 +24,9 @@ class Rectangle(Shape):
         self.draw_gradient = value
 
     def draw(self):
+        if not self.is_visible:
+            return
+
         if self.draw_border:
             # Draw border
             glLineWidth(2.0)
