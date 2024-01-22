@@ -1,21 +1,19 @@
-import tkinter as tk
+import os
+
 from pyopengltk import OpenGLFrame
-from OpenGL import GL, GLU, GLUT
-from PIL import Image
-import numpy as np
+from OpenGL import GL, GLU
 
-from domain_frame.entity.circle import Circle
-from domain_frame.entity.domain_scene import DomainScene
-from domain_frame.entity.image_item import ImageItem
-from domain_frame.entity.rectangle import Rectangle
-from domain_frame.entity.shape import Shape
-from domain_frame.renderer.domain_frame_renderer import DomainFrameRenderer
+from new_try.entity.battle_field_unit_card_scene import BattleFieldUnitCardScene
+from new_try.entity.circle import Circle
+from new_try.entity.image_item import ImageItem
+from new_try.entity.rectangle import Rectangle
+from new_try.renderer.battle_field_unit_card_frame_renderer import BattleFieldUnitCardFrameRenderer
 
 
-class DomainWindow(OpenGLFrame):
+class BattleFieldUnitCardFrame(OpenGLFrame):
     def __init__(self, master=None, **kwargs):
         super().__init__(master, **kwargs)
-        self.domain_scene = DomainScene()
+        self.domain_scene = BattleFieldUnitCardScene()
 
         screen_width = self.winfo_screenwidth()
         screen_height = self.winfo_screenheight()
@@ -27,22 +25,25 @@ class DomainWindow(OpenGLFrame):
 
         self.init_shapes()
 
+        current_directory = os.getcwd()
+        print("현재 디렉토리:", current_directory)
+
         self.domain_scene.add_image(
             ImageItem(
-                path="images/card1.png",
+                path="../../local_storage/card_images/card1.png",
                 position=(25, 25),
                 size=(300, 300),
                 translation=(0, 0)))
 
         equip_image = ImageItem(
-                path="images/equip_white.jpg",
+                path="../../local_storage/card_images/equip_white.jpg",
                 position=(390, 30),
                 size=(40, 40),
                 translation=(0, 0))
         self.domain_scene.add_image(equip_image)
         equip_image.set_visible(False)
 
-        self.renderer = DomainFrameRenderer(self.domain_scene, self)
+        self.renderer = BattleFieldUnitCardFrameRenderer(self.domain_scene, self)
 
     def init_shapes(self):
         equip_card = Rectangle(
@@ -52,17 +53,9 @@ class DomainWindow(OpenGLFrame):
         equip_card.set_draw_gradient(True)
         self.domain_scene.add_shape(equip_card)
 
-        # equip_effect = Rectangle(
-        #     color=(1.0, 1.0, 1.0, 1.0),
-        #     vertices=[(0, 0), (40, 0), (40, 40), (0, 40)],
-        #     translation=(390, 30))
-        # equip_effect.set_draw_gradient(True)
-        # self.domain_scene.add_shape(equip_effect)
-
         unit_card = Rectangle(
             color=(0.0, 0.78, 0.34, 1.0),
-            vertices=[(0, 0), (350, 0), (350, 500), (0, 500)],
-            translation=(0, 0))
+            vertices=[(0, 0), (350, 0), (350, 500), (0, 500)])
         unit_card.set_draw_gradient(True)
         self.domain_scene.add_shape(unit_card)
 
@@ -72,8 +65,7 @@ class DomainWindow(OpenGLFrame):
             circle = Circle(
                     color=(1.0, 0.33, 0.34, 1.0),
                     center=center,
-                    radius=circle_radius,
-                    translation=(0, 0))
+                    radius=circle_radius)
             self.domain_scene.add_shape(circle)
 
         equip_card.set_visible(False)
